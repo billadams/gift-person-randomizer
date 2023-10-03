@@ -1,168 +1,376 @@
 'use client';
+import { useState } from 'react';
+
+type families = family[];
 
 type family = {
   id: number;
   name: string;
-  kids: string[];
+  children: child[];
 };
 
-type gift = {
+type child = {
+  name: string;
+  hasGivenGift: boolean;
+  hasRecievedGift: boolean;
+};
+
+type giftAction = {
   gifter: string;
   giftee: string;
 };
 
-// type giftsFor = gift[];
-
-let giftsFor: gift[] = [];
-
-const families = [
+const familiesJSON: families = [
   {
     id: 0,
     name: 'Adams',
-    kids: ['Savannah', 'Ceden', 'Rowan'],
+    children: [
+      {
+        name: 'Savannah',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Ceden',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Rowan',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+    ],
   },
   {
     id: 1,
     name: 'Cox',
-    kids: ['Tylee', 'Aizlyn', 'Zayden', 'Kysen'],
+    children: [
+      {
+        name: 'Tylee',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Aizlyn',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Zayden',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Kysen',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+    ],
   },
   {
     id: 2,
     name: 'Donnini',
-    kids: ['Grey', 'Irelyn'],
+    children: [
+      {
+        name: 'Grey',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Irelyn',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+    ],
   },
   {
     id: 3,
     name: 'Yantzie',
-    kids: ['Emmy', 'Maddy'],
+    children: [
+      {
+        name: 'Emmy',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Maddy',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+    ],
   },
 ];
 
-const eligbleFamilies = [
+const eligbleFamilies: families = [
   {
     id: 0,
     name: 'Adams',
-    kids: ['Savannah', 'Ceden', 'Rowan'],
+    children: [
+      {
+        name: 'Savannah',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Ceden',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Rowan',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+    ],
   },
   {
     id: 1,
     name: 'Cox',
-    kids: ['Tylee', 'Aizlyn', 'Zayden', 'Kysen'],
+    children: [
+      {
+        name: 'Tylee',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Aizlyn',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Zayden',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Kysen',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+    ],
   },
   {
     id: 2,
     name: 'Donnini',
-    kids: ['Grey', 'Irelyn'],
+    children: [
+      {
+        name: 'Grey',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Irelyn',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+    ],
   },
   {
     id: 3,
     name: 'Yantzie',
-    kids: ['Emmy', 'Maddy'],
+    children: [
+      {
+        name: 'Emmy',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+      {
+        name: 'Maddy',
+        hasGivenGift: false,
+        hasRecievedGift: false,
+      },
+    ],
   },
 ];
 
 export default function Home() {
-  function getEligibleKidCount() {
-    let eligibleKidCount: number = 0;
+  let randomGifts: giftAction[] = [];
+
+  const [gifts, setGifts]: any = useState();
+
+  function getChildrenHaveGivenGiftCount() {
+    let childrenHaveGivenGiftCount: number = 0;
 
     for (const family of eligbleFamilies) {
-      eligibleKidCount += family.kids.length;
+      for (const child of family.children) {
+        if (child.hasGivenGift === true) {
+          childrenHaveGivenGiftCount++;
+        }
+      }
     }
 
-    return eligibleKidCount;
+    return childrenHaveGivenGiftCount;
+  }
+
+  function getFamiliesHaveNotRecievedGift(): families {
+    let familiesHaveNotRecieved: families = [];
+
+    for (const family of eligbleFamilies) {
+      if (family.children.some((child) => child.hasRecievedGift === false)) {
+        familiesHaveNotRecieved.push(family);
+      }
+    }
+
+    return familiesHaveNotRecieved;
+  }
+
+  function getFamiliesHaveNotGivenGift(): families {
+    let familiesHaveNotGiven: families = [];
+
+    for (const family of eligbleFamilies) {
+      if (family.children.some((child) => child.hasGivenGift === false)) {
+        familiesHaveNotGiven.push(family);
+      }
+    }
+
+    return familiesHaveNotGiven;
   }
 
   function getRandomInt(maxValue: number): number {
     return Math.floor(Math.random() * maxValue);
   }
 
-  function getFirstFamily(): family {
-    const familyId = getRandomInt(3);
-
-    const family = eligbleFamilies.filter(
-      (family) => (family.id = familyId)
-    )[0];
-
-    return family;
-  }
-
-  function getSecondFamily(firstFamily: family): family {
+  function getGiftGivingFamily(): family {
     let isEligibleFamily = false;
-    let secondFamily!: family;
-    let familyId: number = 0;
+    let familiesHaveNotGiven: families;
+    let giftGivingFamily: family;
 
     do {
-      familyId = getRandomInt(3);
+      familiesHaveNotGiven = getFamiliesHaveNotGivenGift();
+      const index = getRandomInt(familiesHaveNotGiven.length);
+      const familyId = familiesHaveNotGiven.at(index)?.id;
 
-      if (firstFamily?.id !== familyId) {
-        const eligibleFamily = eligbleFamilies.filter(
-          (family) => (family.id = familyId)
-        )[0];
+      giftGivingFamily = eligbleFamilies.find(
+        (family) => family.id === familyId
+      ) as family;
 
-        if (eligibleFamily?.kids?.length > 0) {
-          secondFamily = eligibleFamily;
+      if (giftGivingFamily) {
+        isEligibleFamily = true;
+      }
+    } while (!isEligibleFamily);
+
+    return giftGivingFamily;
+  }
+
+  function getGiftRecievingFamily(firstFamily: family): family {
+    let isEligibleFamily = false;
+    let familiesHaveNotRecieved: families;
+    let giftRecievingFamily!: family;
+
+    do {
+      familiesHaveNotRecieved = getFamiliesHaveNotRecievedGift();
+      const index = getRandomInt(familiesHaveNotRecieved.length);
+      const familyId = familiesHaveNotRecieved.at(index)?.id;
+
+      if (firstFamily.id !== familyId) {
+        giftRecievingFamily = eligbleFamilies.find(
+          (family) => family.id === familyId
+        ) as family;
+
+        if (giftRecievingFamily) {
           isEligibleFamily = true;
         }
       }
     } while (!isEligibleFamily);
 
-    return secondFamily;
+    return giftRecievingFamily;
   }
 
-  function getKid(family: family): string {
-    const kidIndex = getRandomInt(family?.kids.length);
-    const kid = family?.kids[kidIndex];
+  function getEligibleChildren(
+    family: family,
+    isGiving: boolean,
+    isRecieving: boolean
+  ): child[] {
+    let children: child[] = [];
 
-    return kid;
+    children = family.children.filter((child) => {
+      if (isGiving && child.hasGivenGift === false) {
+        return child;
+      }
+
+      if (isRecieving && child.hasRecievedGift === false) {
+        return child;
+      }
+    });
+
+    return children;
   }
 
-  function removeEligibleKid(eligibleFamily: family, kid: string): void {
-    const family = eligbleFamilies.filter(
-      (family) => (family.id = eligibleFamily?.id)
-    )[0];
+  function getChild(
+    family: family,
+    isGiving: boolean = false,
+    isRecieving: boolean = false
+  ): string {
+    const eligibleChildren = getEligibleChildren(family, isGiving, isRecieving);
+    const childIndex = getRandomInt(eligibleChildren.length);
+    const child = eligibleChildren[childIndex];
 
-    family?.kids.splice(family.kids.indexOf(kid), 1);
+    return child.name;
   }
 
-  const randomize = () => {
+  function removeEligibleChild(
+    eligibleFamily: family,
+    childName: string,
+    hasGivenGift: boolean = false,
+    hasRecievedGift: boolean = false
+  ): void {
+    const family = eligbleFamilies.find(
+      (family) => family.id === eligibleFamily?.id
+    ) as family;
+
+    const child = family.children.find(
+      (child) => child.name === childName
+    ) as child;
+
+    if (hasGivenGift) {
+      child.hasGivenGift = true;
+    } else if (hasRecievedGift) {
+      child.hasRecievedGift = true;
+    }
+  }
+
+  function randomize() {
     let hasAllBeenProcessed = false;
 
     do {
-      let firstFamily = getFirstFamily();
-      let firstKid = getKid(firstFamily);
-      removeEligibleKid(firstFamily, firstKid);
+      let firstFamily = getGiftGivingFamily();
+      let firstChild = getChild(firstFamily, true);
+      removeEligibleChild(firstFamily, firstChild, true);
 
-      let secondFamily = getSecondFamily(firstFamily);
-      let secondKid = getKid(secondFamily);
-      removeEligibleKid(secondFamily, secondKid);
+      let secondFamily = getGiftRecievingFamily(firstFamily);
+      let secondChild = getChild(secondFamily, false, true);
+      removeEligibleChild(secondFamily, secondChild, false, true);
 
-      let gift: gift = {
-        gifter: firstKid,
-        giftee: secondKid,
+      let giftActions: giftAction = {
+        gifter: firstChild,
+        giftee: secondChild,
       };
 
-      giftsFor.push(gift);
+      randomGifts.push(giftActions);
 
-      const remainingEligibleKids = getEligibleKidCount();
-      if (remainingEligibleKids === 0) {
+      let familiesHaveNotRecieved = getFamiliesHaveNotRecievedGift();
+      if (familiesHaveNotRecieved.length === 0) {
         hasAllBeenProcessed = true;
       }
     } while (!hasAllBeenProcessed);
-  };
+
+    setGifts(randomGifts);
+  }
 
   return (
     <main className='p-6'>
       <h1 className='text-xl font-medium text-center mb-2'>Gift Randomizer</h1>
       <div className='grid grid-cols-4 gap-4 mb-4'>
-        {families.map((fam) => {
+        {eligbleFamilies.map((family: family) => {
           return (
-            <section key={fam.id} className='cols-span-2 bg-gray-100'>
+            <section key={family.id} className='cols-span-2 bg-gray-100'>
               <h2 className='bg-gray-500 text-white p-2 text-center'>
-                House {fam.name}
+                House {family.name}
               </h2>
               <ul className='p-2'>
-                {fam.kids.map((kid) => {
-                  return <li key={kid}>{kid}</li>;
+                {family.children.map((child) => {
+                  return <li key={child.name}>{child.name}</li>;
                 })}
               </ul>
             </section>
@@ -178,11 +386,11 @@ export default function Home() {
       </button>
       <div>
         <h3>Gifts</h3>
-        {giftsFor &&
-          giftsFor.map((gift, index) => {
+        {gifts &&
+          gifts.map((giftAction: giftAction, index: number) => {
             return (
               <section key={index}>
-                Gifter: {gift.gifter} {'=>'} Giftee: {gift.giftee}
+                Gifter: {giftAction.gifter} {'=>'} Giftee: {giftAction.giftee}
               </section>
             );
           })}
