@@ -253,7 +253,7 @@ export default function Home() {
     return giftGivingFamily;
   }
 
-  function getGiftRecievingFamily(firstFamily: family): family {
+  function getGiftRecievingFamily(giftGivingFamily: family): family {
     let isEligibleFamily = false;
     let familiesHaveNotRecieved: families;
     let giftRecievingFamily!: family;
@@ -263,7 +263,7 @@ export default function Home() {
       const index = getRandomInt(familiesHaveNotRecieved.length);
       const familyId = familiesHaveNotRecieved.at(index)?.id;
 
-      if (firstFamily.id !== familyId) {
+      if (giftGivingFamily.id !== familyId) {
         giftRecievingFamily = eligbleFamilies.find(
           (family) => family.id === familyId
         ) as family;
@@ -334,17 +334,17 @@ export default function Home() {
     let hasAllBeenProcessed = false;
 
     do {
-      let firstFamily = getGiftGivingFamily();
-      let firstChild = getChild(firstFamily, true);
-      removeEligibleChild(firstFamily, firstChild, true);
+      let giftGivingFamily = getGiftGivingFamily();
+      let childGivingGift = getChild(giftGivingFamily, true);
+      removeEligibleChild(giftGivingFamily, childGivingGift, true);
 
-      let secondFamily = getGiftRecievingFamily(firstFamily);
-      let secondChild = getChild(secondFamily, false, true);
-      removeEligibleChild(secondFamily, secondChild, false, true);
+      let giftRecievingFamily = getGiftRecievingFamily(giftGivingFamily);
+      let childRecievingGift = getChild(giftRecievingFamily, false, true);
+      removeEligibleChild(giftRecievingFamily, childRecievingGift, false, true);
 
       let giftActions: giftAction = {
-        gifter: firstChild,
-        giftee: secondChild,
+        gifter: childGivingGift,
+        giftee: childRecievingGift,
       };
 
       randomGifts.push(giftActions);

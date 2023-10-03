@@ -10,7 +10,7 @@
     {
       "name": "Next.js: debug client-side",
       "type": "msedge",
-      "request": "launch",
+      "request": "attach",
       "url": "http://localhost:3000"
     },
     {
